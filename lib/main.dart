@@ -1,9 +1,12 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:prueba_01/screens/Ejercicio1.dart';
-import 'package:prueba_01/screens/Ejercicio2.dart';
+import 'package:prueba_01/screens/LoginScreen.dart';
 
-void main(){
+
+Future<void> main() async {
+   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(Prueba());
 }
 
@@ -13,7 +16,7 @@ class Prueba extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title:"Prueba 01",
+      title:"Prueba",
       home:Home(),
       debugShowCheckedModeBanner: false,
     );
@@ -31,23 +34,13 @@ class _HomeState extends State<Home> {
   int indice = 0;
   @override
   Widget build(BuildContext context) {
-    List <Widget> screens = [Cuerpo(context), const Ejercicio1()];
+    
     return Scaffold(
       appBar: AppBar(
         title : Text("Jonathan Barros"),
         backgroundColor: Colors.white38,
       ),
-      body: screens[indice],bottomNavigationBar: BottomNavigationBar(currentIndex: indice,
-      onTap: (value) {
-        setState(() {
-          indice=value;
-        });
-      },
-      items : const[
-        BottomNavigationBarItem(icon: Icon(Icons.home_rounded),label: "Prueba"),
-        BottomNavigationBarItem(icon: Icon(Icons.computer_rounded), label:"Ejercicio 01"),
-
-      ]),
+      body: Cuerpo(context)     
     );
   }
 }
@@ -60,7 +53,7 @@ Widget Cuerpo(context){
     ),
   child:Column(
     children: [
-      Text("JONATHANDEMND GIT HUB", style: TextStyle(fontSize: 30, color: Colors.redAccent),),
+      Text("JONATHANDEMOND GIT HUB", style: TextStyle(fontSize: 29, color: Colors.redAccent),),
   //////////////////widgets////////////
         Boton3(context)
     ],
@@ -79,7 +72,7 @@ Widget Boton3(BuildContext context) {
       padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
       textStyle: const TextStyle(fontSize: 16),
     ),
-    child: const Text("Ingrese Ejercicio 2"),
+    child: const Text("INGRESE AL LOGIN"),
   );
 }
 
@@ -89,12 +82,12 @@ void alerta02(BuildContext context) {
     context: context,
     builder: (context) {
       return AlertDialog(
-        title: const Text("Desea ir al Ejercico 2"),
-        content: const Text("EJERCICIO 02 "),
+        title: const Text("Desea ir al Login"),
+        content: const Text("LOGIN"),
         actions: [
           TextButton(
             onPressed: () {
-              irEjercicio2(context);
+             login(context);
 
             },
             child: const Text("Sí"),
@@ -122,9 +115,9 @@ void alerta02(BuildContext context) {
   );
 }
 
-void irEjercicio2(BuildContext context) {
+void login(BuildContext context) {
   Navigator.push(
     context,
-    MaterialPageRoute(builder: (context) => const Ejercicio2()),
+    MaterialPageRoute(builder: (context) => const Login()),
   );
 }
