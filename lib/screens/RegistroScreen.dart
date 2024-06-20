@@ -1,8 +1,12 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:prueba_01/screens/LoginScreen.dart';
+
+import 'LoginScreen.dart';
+
+
+
 
 Future<void> main() async {
    WidgetsFlutterBinding.ensureInitialized();
@@ -40,20 +44,70 @@ class _HomeState extends State<Home> {
   }
 }
 
-Widget Cuerpo(context){
+Widget Cuerpo(context) {
+  return Container(
+    decoration: BoxDecoration(
+      image: DecorationImage(
+          image: AssetImage('assets/image/1bkc.jpg'), fit: BoxFit.cover),
+    ),
+    padding: EdgeInsets.all(10),
+    child: (Column(
+      children: <Widget>[
+        const Text("REGISTRO"),
+        CampoNick(context),
+        CampoNombre(context),
+        CampoEdad(context),
+        CampoCorreo(context),
+        CampoContrasenia(context),
+        BotonGuardar(context)
+      ],
+    )),
+  );
+}
+final TextEditingController _nick = TextEditingController();
+
+Widget CampoNick(context){
   return Container(
     padding: EdgeInsets.all(10),
     child: (
-      Column(
-        children: <Widget>[
-          const Text("REGISTRO"),
+      TextField(
+        controller: _nick,
+      decoration: const InputDecoration(
+        hintText: "Ingrese Nick Name"),
+    )
+    
+    ),
+  );
+}
+final TextEditingController _nombre = TextEditingController();
+
+Widget CampoNombre(context){
+  return Container(
+    padding: EdgeInsets.all(10),
+    child: (
+      TextField(
+        controller: _nombre,
+      decoration: const InputDecoration(
+        hintText: "Ingrese Nombre"),
+    )
+    
+    ),
+  );
+}
+final TextEditingController _edad = TextEditingController();
+
+Widget CampoEdad(context){
+  return Container(
+    padding: EdgeInsets.all(10),
+    child: (
+      TextField(
+        controller: _edad,
+        keyboardType: TextInputType.number,
+      decoration: const InputDecoration(
         
-          CampoCorreo(context),
-          CampoContrasenia(context),
-          BotonGuardar(context)
-        ],
-      )
-      
+        hintText: "Ingrese Edad"),
+    )
+    
     ),
   );
 }
@@ -72,20 +126,6 @@ Widget CampoCorreo(context){
     ),
   );
 }
-/*final TextEditingController _nick = TextEditingController();
-Widget CampoNickName(context){
-  return Container(
-    padding: EdgeInsets.all(10),
-    child: (
-      TextField(
-        controller: _nick,
-      decoration:  InputDecoration(
-        hintText: "Ingrese NickName"),
-    )
-    
-    ),
-  );
-}*/
 final TextEditingController _contrasenia= TextEditingController();
 Widget CampoContrasenia(context){
    return Container(
@@ -116,6 +156,8 @@ Future<void> registro(context) async {
     password: _contrasenia.text,
   );
   //////////////navegacion///
+  /////funcion gurdar//
+  guardar();
     Navigator.push(context,MaterialPageRoute(builder: (context)=> Login()));
 
 } on FirebaseAuthException catch (e) {
@@ -130,8 +172,26 @@ Future<void> registro(context) async {
   print(e);
 }
 }
-////////////////alertas//////////////faltan
+/////////////////////////////////////
 ///
+Future<void> guardar() async {
+  DatabaseReference ref = FirebaseDatabase.instance.ref("Usuarios/"+_nick.text);
+
+await ref.set({
+  "nick": _nick.text,
+  "nombre": _nombre.text,
+  "edad": _edad.text
+  
+});
+}
+
+
+
+
+
+
+
+////////////////alertas//////////////faltan
 ///
  void alert01(BuildContext context, Widget title, Widget content) {
   showDialog(
